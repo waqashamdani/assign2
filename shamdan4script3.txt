@@ -1,0 +1,40 @@
+USE shamdan4assign2db;
+
+--  Query 1
+SELECT last_name FROM patient;
+
+--  Query 2
+SELECT DISTINCT last_name FROM patient;
+
+--  Query 3
+SELECT * FROM doctor ORDER BY last_name;
+
+--  Query 4
+SELECT hospial_name, hospital_code FROM hospital WHERE number_bed > 1500;
+
+--  Query 5
+SELECT last_name, first_name FROM doctor WHERE work_hospital_code IN (SELECT hospital_code FROM hospital WHERE hospial_name = 'St. Joseph');
+
+--  Query 6
+SELECT first_name, last_name FROM patient WHERE last_name LIKE "G%";
+
+--  Query 7
+SELECT first_name, last_name FROM patient WHERE ohip_number IN (SELECT patient_OHIP FROM doctor_patient WHERE doc_license_number IN (SELECT license_number FROM doctor WHERE last_name = "Clooney"));
+
+--  Query 8
+SELECT hospial_name, city, last_name FROM hospital, doctor WHERE headDoc_license_number  = license_number;
+
+--  Query 9
+SELECT SUM(number_bed) AS "Total Number of Beds" FROM hospital;
+
+--  Query 10
+SELECT patient.first_name, doctor.first_name FROM patient, doctor WHERE license_number IN (SELECT headDoc_license_number FROM hospital) AND ohip_number IN (SELECT patient_OHIP FROM doctor_patient WHERE doc_license_number IN (SELECT headDoc_license_number FROM hospital)) ;
+
+--  Query 11 
+SELECT first_name, last_name FROM doctor WHERE specialty = 'Surgeon' AND work_hospital_code IN (SELECT hospital_code FROM hospital WHERE hospial_name = 'Victoria');
+
+--  Query 12
+SELECT first_name FROM doctor WHERE license_number NOT IN (SELECT doc_license_number FROM doctor_patient);
+
+--  Query 13
+SELECT last_name, first_name FROM doctor WHERE license_number IN (SELECT doc_license_number FROM doctor_patient GROUP BY doc_license_number HAVING COUNT(*) > 1);

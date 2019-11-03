@@ -1,0 +1,408 @@
+--------------
+SELECT * FROM patient
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+LOAD DATA LOCAL INFILE '/home/centos/assign2/testdata.txt' 
+REPLACE INTO TABLE patient
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'
+(ohip_number, first_name, last_name)
+--------------
+
+Query OK, 6 rows affected (0.09 sec)
+Records: 6  Deleted: 0  Skipped: 0  Warnings: 0
+
+--------------
+SELECT * FROM patient
+--------------
+
++-------------+------------+-----------+
+| ohip_number | first_name | last_name |
++-------------+------------+-----------+
+|   110112113 | Bill       | Gellar    |
+|   111222111 | Suzi       | Bing      |
+|   111222333 | Jon        | Green     |
+|   333444555 | Colleen    | Gellar    |
+|   444555666 | Sean       | Gellar    |
+|   667766777 | Scotty     | Bing      |
++-------------+------------+-----------+
+6 rows in set (0.00 sec)
+
+--------------
+INSERT INTO patient VALUES(123456789, 'Syed', 'HAMDANI')
+--------------
+
+Query OK, 1 row affected (0.04 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+INSERT INTO doctor VALUES('RD34', 'Bernie', 'Kavorikian', 'Urologist', '1980-09-09', NULL)
+--------------
+
+Query OK, 1 row affected (0.02 sec)
+
+--------------
+INSERT INTO doctor VALUES('GD56', 'Joey', 'Shabado', 'Podiatrist', '1960-06-24', NULL)
+--------------
+
+Query OK, 1 row affected (0.02 sec)
+
+--------------
+INSERT INTO doctor VALUES('HT45', 'Ross', 'Clooney', 'Surgeon', '1987-06-20', NULL)
+--------------
+
+Query OK, 1 row affected (0.71 sec)
+
+--------------
+INSERT INTO doctor VALUES('YT67', 'Ben', 'Spock', 'Pediatrician', '1955-02-20', NULL)
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+
+--------------
+INSERT INTO doctor VALUES('JK78', 'Mandy', 'Webster','Surgeon', '1990-08-08', NULL)
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+INSERT INTO doctor VALUES('SE66', 'Colleen', 'Aziz', 'Surgeon', '1989-08-24', NULL)
+--------------
+
+Query OK, 1 row affected (0.02 sec)
+
+--------------
+INSERT INTO doctor VALUES('XY33', 'Salman', 'Essa', 'gynocologist', '2018-01-01', NULL)
+--------------
+
+Query OK, 1 row affected (0.04 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++----------------+------------+------------+--------------+---------------+--------------------+
+| license_number | first_name | last_name  | specialty    | date_licensed | work_hospital_code |
++----------------+------------+------------+--------------+---------------+--------------------+
+| GD56           | Joey       | Shabado    | Podiatrist   | 1960-06-24    | NULL               |
+| HT45           | Ross       | Clooney    | Surgeon      | 1987-06-20    | NULL               |
+| JK78           | Mandy      | Webster    | Surgeon      | 1990-08-08    | NULL               |
+| RD34           | Bernie     | Kavorikian | Urologist    | 1980-09-09    | NULL               |
+| SE66           | Colleen    | Aziz       | Surgeon      | 1989-08-24    | NULL               |
+| XY33           | Salman     | Essa       | gynocologist | 2018-01-01    | NULL               |
+| YT67           | Ben        | Spock      | Pediatrician | 1955-02-20    | NULL               |
++----------------+------------+------------+--------------+---------------+--------------------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM hospital
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+INSERT INTO hospital VALUES('BBC','St. Joseph', 'London', 'On', 1000,'GD56', '1999-09-10')
+--------------
+
+Query OK, 1 row affected (0.14 sec)
+
+--------------
+INSERT INTO hospital VALUES('ABC', 'Victoria', 'London', 'On', 1600, 'SE66', '1994-12-05')
+--------------
+
+Query OK, 1 row affected (0.24 sec)
+
+--------------
+INSERT INTO hospital VALUES('DDE', 'Victoria', 'Victoria', 'BC', 1200, 'YT67', '1997-12-07')
+--------------
+
+Query OK, 1 row affected (0.03 sec)
+
+--------------
+SELECT * FROM hospital
+--------------
+
++---------------+---------------+----------+----------+------------+------------------------+-------------------+
+| hospital_code | hospital_name | city     | province | number_bed | headDoc_license_number | headDoc_startDate |
++---------------+---------------+----------+----------+------------+------------------------+-------------------+
+| ABC           | Victoria      | London   | On       |       1600 | SE66                   | 1994-12-05        |
+| BBC           | St. Joseph    | London   | On       |       1000 | GD56                   | 1999-09-10        |
+| DDE           | Victoria      | Victoria | BC       |       1200 | YT67                   | 1997-12-07        |
++---------------+---------------+----------+----------+------------+------------------------+-------------------+
+3 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor_patient
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('GD56', 110112113)
+--------------
+
+Query OK, 1 row affected (0.02 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('HT45', 444555666)
+--------------
+
+Query OK, 1 row affected (0.04 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('JK78', 444555666)
+--------------
+
+Query OK, 1 row affected (0.03 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('SE66', 111222333)
+--------------
+
+Query OK, 1 row affected (0.74 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('JK78', 111222333)
+--------------
+
+Query OK, 1 row affected (0.45 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('GD56', 333444555)
+--------------
+
+Query OK, 1 row affected (0.18 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('GD56', 667766777)
+--------------
+
+Query OK, 1 row affected (0.02 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('YT67', 667766777)
+--------------
+
+Query OK, 1 row affected (0.39 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('JK78', 667766777)
+--------------
+
+Query OK, 1 row affected (0.19 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('YT67', 111222111)
+--------------
+
+Query OK, 1 row affected (0.02 sec)
+
+--------------
+INSERT INTO doctor_patient VALUES('YT67', 123456789)
+--------------
+
+Query OK, 1 row affected (0.18 sec)
+
+--------------
+SELECT * FROM doctor_patient
+--------------
+
++--------------------+--------------+
+| doc_license_number | patient_OHIP |
++--------------------+--------------+
+| GD56               |    110112113 |
+| YT67               |    111222111 |
+| JK78               |    111222333 |
+| SE66               |    111222333 |
+| YT67               |    123456789 |
+| GD56               |    333444555 |
+| HT45               |    444555666 |
+| JK78               |    444555666 |
+| GD56               |    667766777 |
+| JK78               |    667766777 |
+| YT67               |    667766777 |
++--------------------+--------------+
+11 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor
+--------------
+
++----------------+------------+------------+--------------+---------------+--------------------+
+| license_number | first_name | last_name  | specialty    | date_licensed | work_hospital_code |
++----------------+------------+------------+--------------+---------------+--------------------+
+| GD56           | Joey       | Shabado    | Podiatrist   | 1960-06-24    | NULL               |
+| HT45           | Ross       | Clooney    | Surgeon      | 1987-06-20    | NULL               |
+| JK78           | Mandy      | Webster    | Surgeon      | 1990-08-08    | NULL               |
+| RD34           | Bernie     | Kavorikian | Urologist    | 1980-09-09    | NULL               |
+| SE66           | Colleen    | Aziz       | Surgeon      | 1989-08-24    | NULL               |
+| XY33           | Salman     | Essa       | gynocologist | 2018-01-01    | NULL               |
+| YT67           | Ben        | Spock      | Pediatrician | 1955-02-20    | NULL               |
++----------------+------------+------------+--------------+---------------+--------------------+
+7 rows in set (0.00 sec)
+
+--------------
+UPDATE doctor SET work_hospital_code = 'BBC' WHERE license_number = 'RD34'
+--------------
+
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+UPDATE doctor SET work_hospital_code = 'BBC' WHERE license_number = 'GD56'
+--------------
+
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+UPDATE doctor SET work_hospital_code = 'BBC' WHERE license_number = 'JK78'
+--------------
+
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+UPDATE doctor SET work_hospital_code = 'ABC' WHERE license_number = 'SE66'
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+UPDATE doctor SET work_hospital_code = 'ABC' WHERE license_number = 'XY33'
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+UPDATE doctor SET work_hospital_code = 'DDE' WHERE license_number = 'HT45'
+--------------
+
+Query OK, 1 row affected (0.47 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+UPDATE doctor SET work_hospital_code = 'DDE' WHERE license_number = 'YT67'
+--------------
+
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+SELECT * FROM doctor
+--------------
+
++----------------+------------+------------+--------------+---------------+--------------------+
+| license_number | first_name | last_name  | specialty    | date_licensed | work_hospital_code |
++----------------+------------+------------+--------------+---------------+--------------------+
+| GD56           | Joey       | Shabado    | Podiatrist   | 1960-06-24    | BBC                |
+| HT45           | Ross       | Clooney    | Surgeon      | 1987-06-20    | DDE                |
+| JK78           | Mandy      | Webster    | Surgeon      | 1990-08-08    | BBC                |
+| RD34           | Bernie     | Kavorikian | Urologist    | 1980-09-09    | BBC                |
+| SE66           | Colleen    | Aziz       | Surgeon      | 1989-08-24    | ABC                |
+| XY33           | Salman     | Essa       | gynocologist | 2018-01-01    | ABC                |
+| YT67           | Ben        | Spock      | Pediatrician | 1955-02-20    | DDE                |
++----------------+------------+------------+--------------+---------------+--------------------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM patient
+--------------
+
++-------------+------------+-----------+
+| ohip_number | first_name | last_name |
++-------------+------------+-----------+
+|   110112113 | Bill       | Gellar    |
+|   111222111 | Suzi       | Bing      |
+|   111222333 | Jon        | Green     |
+|   123456789 | Syed       | HAMDANI   |
+|   333444555 | Colleen    | Gellar    |
+|   444555666 | Sean       | Gellar    |
+|   667766777 | Scotty     | Bing      |
++-------------+------------+-----------+
+7 rows in set (0.00 sec)
+
+--------------
+UPDATE patient SET last_name = 'Brown' WHERE ohip_number = 111222111
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+SELECT * FROM patient
+--------------
+
++-------------+------------+-----------+
+| ohip_number | first_name | last_name |
++-------------+------------+-----------+
+|   110112113 | Bill       | Gellar    |
+|   111222111 | Suzi       | Brown     |
+|   111222333 | Jon        | Green     |
+|   123456789 | Syed       | HAMDANI   |
+|   333444555 | Colleen    | Gellar    |
+|   444555666 | Sean       | Gellar    |
+|   667766777 | Scotty     | Bing      |
++-------------+------------+-----------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor_patient
+--------------
+
++--------------------+--------------+
+| doc_license_number | patient_OHIP |
++--------------------+--------------+
+| GD56               |    110112113 |
+| YT67               |    111222111 |
+| JK78               |    111222333 |
+| SE66               |    111222333 |
+| YT67               |    123456789 |
+| GD56               |    333444555 |
+| HT45               |    444555666 |
+| JK78               |    444555666 |
+| GD56               |    667766777 |
+| JK78               |    667766777 |
+| YT67               |    667766777 |
++--------------------+--------------+
+11 rows in set (0.00 sec)
+
+--------------
+UPDATE doctor_patient SET doc_license_number = (SELECT license_number FROM doctor WHERE last_name = 'Clooney') WHERE doc_license_number IN (SELECT license_number FROM doctor WHERE last_name = 'Spock')
+--------------
+
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+--------------
+SELECT * FROM doctor_patient
+--------------
+
++--------------------+--------------+
+| doc_license_number | patient_OHIP |
++--------------------+--------------+
+| GD56               |    110112113 |
+| HT45               |    111222111 |
+| JK78               |    111222333 |
+| SE66               |    111222333 |
+| HT45               |    123456789 |
+| GD56               |    333444555 |
+| HT45               |    444555666 |
+| JK78               |    444555666 |
+| GD56               |    667766777 |
+| HT45               |    667766777 |
+| JK78               |    667766777 |
++--------------------+--------------+
+11 rows in set (0.00 sec)
+
+Bye

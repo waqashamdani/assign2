@@ -1,0 +1,75 @@
+USE shamdan4assign2db;
+
+-- Loading "patient": From testdata.txt
+
+SELECT * FROM patient;
+LOAD DATA LOCAL INFILE '/home/centos/assign2/testdata.txt' 
+REPLACE INTO TABLE patient
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'
+(ohip_number, first_name, last_name);
+SELECT * FROM patient;
+INSERT INTO patient VALUES(123456789, 'Syed', 'HAMDANI');
+
+-- Loading "doctor"
+
+SELECT * FROM doctor;
+INSERT INTO doctor VALUES('RD34', 'Bernie', 'Kavorikian', 'Urologist', '1980-09-09', NULL);
+INSERT INTO doctor VALUES('GD56', 'Joey', 'Shabado', 'Podiatrist', '1960-06-24', NULL);
+INSERT INTO doctor VALUES('HT45', 'Ross', 'Clooney', 'Surgeon', '1987-06-20', NULL);
+INSERT INTO doctor VALUES('YT67', 'Ben', 'Spock', 'Pediatrician', '1955-02-20', NULL);
+INSERT INTO doctor VALUES('JK78', 'Mandy', 'Webster','Surgeon', '1990-08-08', NULL);
+INSERT INTO doctor VALUES('SE66', 'Colleen', 'Aziz', 'Surgeon', '1989-08-24', NULL);
+INSERT INTO doctor VALUES('XY33', 'Salman', 'Essa', 'gynocologist', '2018-01-01', NULL);
+SELECT * FROM doctor;
+
+
+-- Loading "hospital"
+
+SELECT * FROM hospital;
+INSERT INTO hospital VALUES('BBC','St. Joseph', 'London', 'On', 1000,'GD56', '1999-09-10');
+INSERT INTO hospital VALUES('ABC', 'Victoria', 'London', 'On', 1600, 'SE66', '1994-12-05');
+INSERT INTO hospital VALUES('DDE', 'Victoria', 'Victoria', 'BC', 1200, 'YT67', '1997-12-07');
+SELECT * FROM hospital;
+
+
+-- Loading "doctor_patient"
+
+SELECT * FROM doctor_patient;
+INSERT INTO doctor_patient VALUES('GD56', 110112113);
+INSERT INTO doctor_patient VALUES('HT45', 444555666);
+INSERT INTO doctor_patient VALUES('JK78', 444555666);
+INSERT INTO doctor_patient VALUES('SE66', 111222333);
+INSERT INTO doctor_patient VALUES('JK78', 111222333);
+INSERT INTO doctor_patient VALUES('GD56', 333444555);
+INSERT INTO doctor_patient VALUES('GD56', 667766777);
+INSERT INTO doctor_patient VALUES('YT67', 667766777);
+INSERT INTO doctor_patient VALUES('JK78', 667766777);
+INSERT INTO doctor_patient VALUES('YT67', 111222111);
+INSERT INTO doctor_patient VALUES('YT67', 123456789);
+SELECT * FROM doctor_patient;
+
+
+-- Set correct hospital for the doctors
+
+SELECT * FROM doctor;
+UPDATE doctor SET work_hospital_code = 'BBC' WHERE license_number = 'RD34';
+UPDATE doctor SET work_hospital_code = 'BBC' WHERE license_number = 'GD56';
+UPDATE doctor SET work_hospital_code = 'BBC' WHERE license_number = 'JK78';
+UPDATE doctor SET work_hospital_code = 'ABC' WHERE license_number = 'SE66';
+UPDATE doctor SET work_hospital_code = 'ABC' WHERE license_number = 'XY33';
+UPDATE doctor SET work_hospital_code = 'DDE' WHERE license_number = 'HT45';
+UPDATE doctor SET work_hospital_code = 'DDE' WHERE license_number = 'YT67';
+SELECT * FROM doctor;
+
+-- Changing patient data: {111222111, last name: Brown}
+
+SELECT * FROM patient;
+UPDATE patient SET last_name = 'Brown' WHERE ohip_number = 111222111;
+SELECT * FROM patient;
+
+-- Updating table: doctor_patient
+
+SELECT * FROM doctor_patient;
+UPDATE doctor_patient SET doc_license_number = (SELECT license_number FROM doctor WHERE last_name = 'Clooney') WHERE doc_license_number IN (SELECT license_number FROM doctor WHERE last_name = 'Spock');
+SELECT * FROM doctor_patient;

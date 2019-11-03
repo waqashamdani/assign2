@@ -1,0 +1,157 @@
+--------------
+SELECT last_name FROM patient
+--------------
+
++-----------+
+| last_name |
++-----------+
+| Gellar    |
+| Brown     |
+| Green     |
+| HAMDANI   |
+| Gellar    |
+| Gellar    |
+| Bing      |
++-----------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT DISTINCT last_name FROM patient
+--------------
+
++-----------+
+| last_name |
++-----------+
+| Gellar    |
+| Brown     |
+| Green     |
+| HAMDANI   |
+| Bing      |
++-----------+
+5 rows in set (0.00 sec)
+
+--------------
+SELECT * FROM doctor ORDER BY last_name
+--------------
+
++----------------+------------+------------+--------------+---------------+--------------------+
+| license_number | first_name | last_name  | specialty    | date_licensed | work_hospital_code |
++----------------+------------+------------+--------------+---------------+--------------------+
+| SE66           | Colleen    | Aziz       | Surgeon      | 1989-08-24    | ABC                |
+| HT45           | Ross       | Clooney    | Surgeon      | 1987-06-20    | DDE                |
+| XY33           | Salman     | Essa       | gynocologist | 2018-01-01    | ABC                |
+| RD34           | Bernie     | Kavorikian | Urologist    | 1980-09-09    | BBC                |
+| GD56           | Joey       | Shabado    | Podiatrist   | 1960-06-24    | BBC                |
+| YT67           | Ben        | Spock      | Pediatrician | 1955-02-20    | DDE                |
+| JK78           | Mandy      | Webster    | Surgeon      | 1990-08-08    | BBC                |
++----------------+------------+------------+--------------+---------------+--------------------+
+7 rows in set (0.00 sec)
+
+ERROR 1054 (42S22) at line 13: Unknown column 'hospial_name' in 'field list'
+ERROR 1054 (42S22) at line 16: Unknown column 'hospial_name' in 'where clause'
+--------------
+SELECT hospial_name, hospital_code FROM hospital WHERE number_bed > 1500
+--------------
+
+--------------
+SELECT last_name, first_name FROM doctor WHERE work_hospital_code IN (SELECT hospital_code FROM hospital WHERE hospial_name = 'St. Joseph')
+--------------
+
+--------------
+SELECT first_name, last_name FROM patient WHERE last_name LIKE "G%"
+--------------
+
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| Bill       | Gellar    |
+| Jon        | Green     |
+| Colleen    | Gellar    |
+| Sean       | Gellar    |
++------------+-----------+
+4 rows in set (0.00 sec)
+
+--------------
+SELECT first_name, last_name FROM patient WHERE ohip_number IN (SELECT patient_OHIP FROM doctor_patient WHERE doc_license_number IN (SELECT license_number FROM doctor WHERE last_name = "Clooney"))
+--------------
+
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| Suzi       | Brown     |
+| Syed       | HAMDANI   |
+| Sean       | Gellar    |
+| Scotty     | Bing      |
++------------+-----------+
+4 rows in set (0.00 sec)
+
+ERROR 1054 (42S22) at line 25: Unknown column 'hospial_name' in 'field list'
+--------------
+SELECT hospial_name, city, last_name FROM hospital, doctor WHERE headDoc_license_number  = license_number
+--------------
+
+--------------
+SELECT SUM(number_bed) AS "Total Number of Beds" FROM hospital
+--------------
+
++----------------------+
+| Total Number of Beds |
++----------------------+
+|                 3800 |
++----------------------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT patient.first_name, doctor.first_name FROM patient, doctor WHERE license_number IN (SELECT headDoc_license_number FROM hospital) AND ohip_number IN (SELECT patient_OHIP FROM doctor_patient WHERE doc_license_number IN (SELECT headDoc_license_number FROM hospital))
+--------------
+
++------------+------------+
+| first_name | first_name |
++------------+------------+
+| Bill       | Joey       |
+| Bill       | Colleen    |
+| Bill       | Ben        |
+| Jon        | Joey       |
+| Jon        | Colleen    |
+| Jon        | Ben        |
+| Colleen    | Joey       |
+| Colleen    | Colleen    |
+| Colleen    | Ben        |
+| Scotty     | Joey       |
+| Scotty     | Colleen    |
+| Scotty     | Ben        |
++------------+------------+
+12 rows in set (0.00 sec)
+
+ERROR 1054 (42S22) at line 34: Unknown column 'hospial_name' in 'where clause'
+--------------
+SELECT first_name, last_name FROM doctor WHERE specialty = 'Surgeon' AND work_hospital_code IN (SELECT hospital_code FROM hospital WHERE hospial_name = 'Victoria')
+--------------
+
+--------------
+SELECT first_name FROM doctor WHERE license_number NOT IN (SELECT doc_license_number FROM doctor_patient)
+--------------
+
++------------+
+| first_name |
++------------+
+| Bernie     |
+| Salman     |
+| Ben        |
++------------+
+3 rows in set (0.00 sec)
+
+--------------
+SELECT last_name, first_name FROM doctor WHERE license_number IN (SELECT doc_license_number FROM doctor_patient GROUP BY doc_license_number HAVING COUNT(*) > 1)
+--------------
+
++-----------+------------+
+| last_name | first_name |
++-----------+------------+
+| Shabado   | Joey       |
+| Clooney   | Ross       |
+| Webster   | Mandy      |
++-----------+------------+
+3 rows in set (0.01 sec)
+
+Bye

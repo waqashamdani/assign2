@@ -1,0 +1,110 @@
+--------------
+SHOW DATABASES
+--------------
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| shamdan4assign2db  |
+| vetoffice          |
++--------------------+
+5 rows in set (0.00 sec)
+
+--------------
+DROP DATABASE shamdan4assign2db
+--------------
+
+Query OK, 5 rows affected (1.63 sec)
+
+--------------
+CREATE DATABASE shamdan4assign2db
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+GRANT ALL PRIVILEGES ON shamdan4assign2db.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SHOW TABLES
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+CREATE TABLE patient(ohip_number INT NOT NULL CHECK (ohip_number between 0 and 9), first_name VARCHAR(20), last_name VARCHAR(20), PRIMARY KEY(ohip_number))
+--------------
+
+Query OK, 0 rows affected (0.64 sec)
+
+--------------
+CREATE TABLE doctor(license_number CHAR(4) NOT NULL, first_name VARCHAR(20), last_name VARCHAR(20), specialty VARCHAR(30), date_licensed DATE, work_hospital_code CHAR (3), PRIMARY KEY(license_number))
+--------------
+
+Query OK, 0 rows affected (2.07 sec)
+
+--------------
+CREATE TABLE hospital(hospital_code CHAR(3) NOT NULL, hospital_name VARCHAR(20), city VARCHAR(20), province CHAR(2), number_bed INT, headDoc_license_number CHAR(4), headDoc_startDate DATE, FOREIGN KEY(headDoc_license_number) REFERENCES doctor(license_number), PRIMARY KEY(hospital_code))
+--------------
+
+Query OK, 0 rows affected (1.25 sec)
+
+--------------
+CREATE TABLE doctor_patient(doc_license_number CHAR(4) NOT NULL, patient_OHIP INT NOT NULL, FOREIGN KEY(doc_license_number) REFERENCES doctor(license_number) ON DELETE CASCADE,FOREIGN KEY(patient_OHIP) REFERENCES patient(ohip_number), PRIMARY KEY(doc_license_number, patient_OHIP))
+--------------
+
+Query OK, 0 rows affected (1.19 sec)
+
+--------------
+ALTER TABLE doctor
+ADD FOREIGN KEY (work_hospital_code) REFERENCES hospital(hospital_code)
+--------------
+
+Query OK, 0 rows affected (3.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+SHOW TABLES
+--------------
+
++-----------------------------+
+| Tables_in_shamdan4assign2db |
++-----------------------------+
+| doctor                      |
+| doctor_patient              |
+| hospital                    |
+| patient                     |
++-----------------------------+
+4 rows in set (0.00 sec)
+
+Bye

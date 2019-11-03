@@ -1,0 +1,53 @@
+-- Script Name: Script 1
+-- Student Name: Syed Waqas Hamdani
+-- Student ID: 250992984
+-- Course: CS 3319A
+-- Assignment: 2
+-- Date Created: November 01, 2019
+
+-- Listing all DBs
+
+SHOW DATABASES; 
+
+-- If DB already exist, Delete the DB
+
+DROP DATABASE shamdan4assign2db;
+
+-- Creating and Accessing the DB
+
+CREATE DATABASE shamdan4assign2db;
+
+-- Granting access to TA
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON shamdan4assign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+-- Listing current tables
+
+USE shamdan4assign2db;
+SHOW TABLES;
+
+-- Creating Table: patient
+
+CREATE TABLE patient(ohip_number INT NOT NULL CHECK (ohip_number between 0 and 9), first_name VARCHAR(20), last_name VARCHAR(20), PRIMARY KEY(ohip_number));
+
+-- Creating Table: doctor
+
+CREATE TABLE doctor(license_number CHAR(4) NOT NULL, first_name VARCHAR(20), last_name VARCHAR(20), specialty VARCHAR(30), date_licensed DATE, work_hospital_code CHAR (3), PRIMARY KEY(license_number));
+
+-- Creating Table: hospital
+
+CREATE TABLE hospital(hospital_code CHAR(3) NOT NULL, hospital_name VARCHAR(20), city VARCHAR(20), province CHAR(2), number_bed INT, headDoc_license_number CHAR(4), headDoc_startDate DATE, FOREIGN KEY(headDoc_license_number) REFERENCES doctor(license_number), PRIMARY KEY(hospital_code));
+
+-- Creating Table: doctor_patient
+
+CREATE TABLE doctor_patient(doc_license_number CHAR(4) NOT NULL, patient_OHIP INT NOT NULL, FOREIGN KEY(doc_license_number) REFERENCES doctor(license_number) ON DELETE CASCADE,FOREIGN KEY(patient_OHIP) REFERENCES patient(ohip_number), PRIMARY KEY(doc_license_number, patient_OHIP));
+
+-- Set doctor: work_hospital_code as foreign key
+
+ALTER TABLE doctor
+ADD FOREIGN KEY (work_hospital_code) REFERENCES hospital(hospital_code);
+SHOW TABLES;

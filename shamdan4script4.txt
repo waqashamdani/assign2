@@ -1,0 +1,31 @@
+USE shamdan4assign2db;
+
+-- delete doctor: License before Jan 1, 1965. This will give an error
+
+DELETE FROM doctor WHERE  date_licensed < '1965-01-01';
+
+-- Create a view:
+  
+CREATE VIEW new_view AS SELECT patient.first_name, patient.last_name, doctor.last_name AS "doc_last_name", hospital_name FROM patient, doctor JOIN hospital WHERE license_number IN (SELECT headDoc_license_number FROM hospital WHERE headDoc_startDate > '1995-12-31') AND license_number = headDoc_license_number AND ohip_number IN (SELECT patient_OHIP FROM doctor_patient WHERE doc_license_number IN (SELECT headDoc_license_number FROM hospital WHERE headDoc_startDate > '1995-12-31'));
+
+-- Displaying all view
+SELECT * FROM new_view;
+
+-- Displaying tables
+SELECT * FROM doctor;
+SELECT * FROM doctor_patient;
+
+-- Delete the doctor: Last name "Clooney"
+
+DELETE FROM doctor WHERE last_name = 'Clooney';
+
+-- Display 
+SELECT * FROM doctor;
+
+-- Cascade Test
+SHOW CREATE TABLE doctor_patient;
+
+-- Delete all surgeons and then displaying the doctor table
+DELETE FROM doctor WHERE specialty = 'Surgeon';
+
+SELECT * FROM doctor;
